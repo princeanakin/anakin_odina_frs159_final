@@ -63,5 +63,13 @@ public class WeightedWords {
 
     public static void main(String[] args) throws FileNotFoundException {
 
+        File file = new File(args[0]);
+
+        WeightedWords set = new WeightedWords(file);
+
+        for (String s : set.getIntensities().keySet()) {
+            System.out.print(s + " " + set.getIntensities().get(s));
+            System.out.println();
+        }
     }
 }

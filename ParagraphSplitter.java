@@ -51,5 +51,11 @@ public class ParagraphSplitter {
 
     public static void main(String[] args) throws IOException {
 
+        // Import a text file containing the given paragraph
+        File file = new File(args[0]);
+
+        // Split the paragraph
+        ParagraphSplitter.splitParagraph(file, args[1]);
+
     }
 }
