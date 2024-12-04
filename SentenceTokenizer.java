@@ -8,7 +8,7 @@ public class SentenceTokenizer {
     // Constructor for the sentence tokenizer
     public SentenceTokenizer(String sentence) {
 
-        // Initialize a StringTokenizer class to handle basic tokenization
+        // Initialize a StringTokenizer class to handle basic tokenization (adding hypen and apostrophes as delimeters for igbo)
         StringTokenizer tokenizer = new StringTokenizer(sentence, " -'");
 
         // Initialize the array for the tokens length amount of tokens
