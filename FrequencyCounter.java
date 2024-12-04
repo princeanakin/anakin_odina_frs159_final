@@ -14,8 +14,8 @@ public class FrequencyCounter {
     public FrequencyCounter(File file) throws FileNotFoundException {
 
         // Initialize the frequency HashMaps for words as keys and frequency integers as values
-        positiveFrequencies = new HashMap<String, Integer>();
-        negativeFrequencies = new HashMap<String, Integer>();
+        positiveFrequencies = new HashMap<>();
+        negativeFrequencies = new HashMap<>();
 
         try (// Scan the given file
         Scanner scan = new Scanner(file)) {
