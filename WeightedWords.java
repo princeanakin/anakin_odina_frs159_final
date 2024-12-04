@@ -17,36 +17,36 @@ public class WeightedWords {
     public WeightedWords(File file) throws FileNotFoundException {
         wordIntensities = new HashMap<>();
 
-        // Scan the inputted file
-        Scanner scan = new Scanner(file);
+        try (// Scan the inputted file
+        Scanner scan = new Scanner(file)) {
+            // Go through each line of the inputted file
+            while (scan.hasNextLine()) {
+                // Each line should start with the given word
+                String nextWord;
+                // Each line should have its own weight between the two limits set
+                double nextWeight;
 
-        // Go through each line of the inputted file
-        while (scan.hasNextLine()) {
-            // Each line should start with the given word
-            String nextWord;
-            // Each line should have its own weight between the two limits set
-            double nextWeight;
+                // Add the next word
+                if (scan.hasNext()) {
+                    nextWord = scan.next();
+                } else {
+                    // Break if we are done
+                    break;
+                }
 
-            // Add the next word
-            if (scan.hasNext()) {
-                nextWord = scan.next();
-            } else {
-                // Break if we are done
-                break;
+                // Add the next weight
+                if (scan.hasNextDouble()) {
+                    nextWeight = scan.nextDouble();
+                    // Checks to make sure that the weights are in the right limits
+                    if (nextWeight < 0 || nextWeight > 1) throw new IllegalArgumentException("Weight should be [0,1]");
+                } else {
+                    // Break if done
+                    break;
+                }
+
+                // Encode the word's weight to the HashMap
+                wordIntensities.put(nextWord, nextWeight);
             }
-
-            // Add the next weight
-            if (scan.hasNextDouble()) {
-                nextWeight = scan.nextDouble();
-                // Checks to make sure that the weights are in the right limits
-                if (nextWeight < 0 || nextWeight > 1) throw new IllegalArgumentException("Weight should be [0,1]");
-            } else {
-                // Break if done
-                break;
-            }
-
-            // Encode the word's weight to the HashMap
-            wordIntensities.put(nextWord, nextWeight);
         }
 
     }
