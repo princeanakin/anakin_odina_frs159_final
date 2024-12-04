@@ -9,6 +9,7 @@ public class FrequencyCounter {
     // Create HashMaps to hold the frequency counts
     private final HashMap<String, Integer> positiveFrequencies;
     private final HashMap<String, Integer> negativeFrequencies;
+    private final HashMap<String, Integer> neutralFrequencies;
 
     // Create the constructor for the FrequencyCounter
     public FrequencyCounter(File file) throws FileNotFoundException {
@@ -16,6 +17,7 @@ public class FrequencyCounter {
         // Initialize the frequency HashMaps for words as keys and frequency integers as values
         positiveFrequencies = new HashMap<>();
         negativeFrequencies = new HashMap<>();
+        neutralFrequencies = new HashMap<>();
 
         try (// Scan the given file
         Scanner scan = new Scanner(file)) {
@@ -47,7 +49,19 @@ public class FrequencyCounter {
                             negativeFrequencies.put(s, 1);
                         } else {
                             // Otherwise, increment its frequency
-                            negativeFrequencies.put(s, positiveFrequencies.get(s) + 1);
+                            negativeFrequencies.put(s, negativeFrequencies.get(s) + 1);
+                        }
+                    }
+                }
+                // If the given sentence is labeled as neutral, add to neutral frequencies
+                else if (tokenized[tokenized.length - 1].equals("neutral")) {
+                    for (String s : tokenized) {
+                        // If it is a new word, add it with a base frequency one to the hash table
+                        if (!neutralFrequencies.containsKey(s)) {
+                            neutralFrequencies.put(s, 1);
+                        } else {
+                            // Otherwise, increment its frequency
+                            neutralFrequencies.put(s, neutralFrequencies.get(s) + 1);
                         }
                     }
                 }
