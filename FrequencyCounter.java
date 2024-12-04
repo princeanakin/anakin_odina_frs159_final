@@ -21,48 +21,52 @@ public class FrequencyCounter {
 
         try (// Scan the given file
         Scanner scan = new Scanner(file)) {
-            // Go through the entire file of split paragraphs into sentences
+            // Go through the entire file training tweets
             while (scan.hasNextLine()) {
                 // Create a SentenceTokenizer object for each sentence
                 SentenceTokenizer tokenizer = new SentenceTokenizer(scan.nextLine());
                 // Add the tokens to an array of strings
                 String[] tokenized = tokenizer.getTokens();
 
-                // If the given sentence is labeled as positive, add to positive frequencies
-                if (tokenized[tokenized.length - 1].equals("positive")) {
-                    // Go through every token
-                    for (String s : tokenized) {
-                        // If it is a new word, add it with a base frequency one to the hash table
-                        if (!positiveFrequencies.containsKey(s)) {
-                            positiveFrequencies.put(s, 1);
-                        } else {
-                            // Otherwise, increment its frequency
-                            positiveFrequencies.put(s, positiveFrequencies.get(s) + 1);
+                switch (tokenized[tokenized.length - 1]) {
+                    // If the given sentence is labeled as positive, add to positive frequencies
+                    case "positive" -> {
+                        // Go through every token
+                        for (String s : tokenized) {
+                            // If it is a new word, add it with a base frequency one to the hash table
+                            if (!positiveFrequencies.containsKey(s)) {
+                                positiveFrequencies.put(s, 1);
+                            } else {
+                                // Otherwise, increment its frequency
+                                positiveFrequencies.put(s, positiveFrequencies.get(s) + 1);
+                            }
                         }
                     }
-                }
-                // If the given sentence is labeled as negative, add to negative frequencies
-                else if (tokenized[tokenized.length - 1].equals("negative")) {
-                    for (String s : tokenized) {
-                        // If it is a new word, add it with a base frequency one to the hash table
-                        if (!negativeFrequencies.containsKey(s)) {
-                            negativeFrequencies.put(s, 1);
-                        } else {
-                            // Otherwise, increment its frequency
-                            negativeFrequencies.put(s, negativeFrequencies.get(s) + 1);
+                    // If the given sentence is labeled as negative, add to negative frequencies
+                    case "negative" -> {
+                        for (String s : tokenized) {
+                            // If it is a new word, add it with a base frequency one to the hash table
+                            if (!negativeFrequencies.containsKey(s)) {
+                                negativeFrequencies.put(s, 1);
+                            } else {
+                                // Otherwise, increment its frequency
+                                negativeFrequencies.put(s, negativeFrequencies.get(s) + 1);
+                            }
                         }
                     }
-                }
-                // If the given sentence is labeled as neutral, add to neutral frequencies
-                else if (tokenized[tokenized.length - 1].equals("neutral")) {
-                    for (String s : tokenized) {
-                        // If it is a new word, add it with a base frequency one to the hash table
-                        if (!neutralFrequencies.containsKey(s)) {
-                            neutralFrequencies.put(s, 1);
-                        } else {
-                            // Otherwise, increment its frequency
-                            neutralFrequencies.put(s, neutralFrequencies.get(s) + 1);
+                    // If the given sentence is labeled as neutral, add to neutral frequencies
+                    case "neutral" -> {
+                        for (String s : tokenized) {
+                            // If it is a new word, add it with a base frequency one to the hash table
+                            if (!neutralFrequencies.containsKey(s)) {
+                                neutralFrequencies.put(s, 1);
+                            } else {
+                                // Otherwise, increment its frequency
+                                neutralFrequencies.put(s, neutralFrequencies.get(s) + 1);
+                            }
                         }
+                    }
+                    default -> {
                     }
                 }
 
