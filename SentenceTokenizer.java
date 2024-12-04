@@ -9,7 +9,7 @@ public class SentenceTokenizer {
     public SentenceTokenizer(String sentence) {
 
         // Initialize a StringTokenizer class to handle basic tokenization
-        StringTokenizer tokenizer = new StringTokenizer(sentence);
+        StringTokenizer tokenizer = new StringTokenizer(sentence, " -'");
 
         // Initialize the array for the tokens length amount of tokens
         tokens = new String[tokenizer.countTokens()];
