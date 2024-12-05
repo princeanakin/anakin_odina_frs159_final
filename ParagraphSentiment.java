@@ -9,13 +9,13 @@ public class ParagraphSentiment {
 
     public ParagraphSentiment(File paragraph, String splitParagraphFile, File stopWords, FrequencyCounter freqCount, WeightedWords weights) throws IOException {
 
-        Scanner scan = new Scanner(paragraph);
-
         ParagraphSplitter.splitParagraph(paragraph, splitParagraphFile);
 
         StopWords igboStop = new StopWords(stopWords);
 
         File splitParagraph = new File(splitParagraphFile);
+
+        Scanner scan2 = new Scanner(splitParagraph);
     
         HashMap<String,Integer> posFreq = freqCount.getPositiveFrequencies();
         HashMap<String,Integer> negFreq = freqCount.getNegativeFrequencies();
@@ -26,8 +26,8 @@ public class ParagraphSentiment {
         double chanceNegative = 1;
         double chanceNeutral = 1;
 
-        while (scan.hasNextLine()) {
-            SentenceTokenizer currentTokens = new SentenceTokenizer(scan.nextLine());
+        while (scan2.hasNextLine()) {
+            SentenceTokenizer currentTokens = new SentenceTokenizer(scan2.nextLine(), igboStop);
 
             for (String token : currentTokens.getTokens()) {
 
