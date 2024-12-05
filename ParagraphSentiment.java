@@ -14,7 +14,7 @@ public class ParagraphSentiment {
     double totalLevel;
 
     // Construct a sentiment analysis using the original paragraph, a file to save the sentence version, a list of stop words to remove during tokenization, and a frequency counter based on training data
-    public ParagraphSentiment(File paragraph, String splitParagraphFile, File stopWords, FrequencyCounter freqCount) throws IOException {
+    public ParagraphSentiment(File paragraph, String splitParagraphFile, File stopWords, FrequencyCounter freqCount, WeightedWords weights) throws IOException {
 
         // Split the paragraph into sentences
         ParagraphSplitter.splitParagraph(paragraph, splitParagraphFile);
@@ -49,6 +49,14 @@ public class ParagraphSentiment {
                     double negFrequency = 0;
                     double neuFrequency = 0;
 
+                    // Sets intensity to 1 if not already specified
+                    if (!weights.getIntensities().containsKey(token)) {
+                        weights.getIntensities().put(token, 1.0);
+                    }
+
+                    // Get the intensity of the word
+                    double wordIntensity = weights.getIntensities().get(token);
+
                     // Set the frequencies to their respective values only if they exist in the training data
                     if (posFreq.containsKey(token)) {
                         posFrequency = posFreq.get(token);
@@ -63,11 +71,11 @@ public class ParagraphSentiment {
                     }
 
                     // Using the formula from chapter 4 (version with Laplace smoothing), calculate and add to each level for each frequency
-                    positiveLevel += (posFrequency + 1) / (freqCount.totalPos() + uniqueFreq.size());
+                    positiveLevel += ((posFrequency + 1) / (freqCount.totalPos() + uniqueFreq.size()) * wordIntensity);
 
-                    negativeLevel += (negFrequency + 1) / (freqCount.totalNeg() + uniqueFreq.size());
+                    negativeLevel += ((negFrequency + 1) / (freqCount.totalNeg() + uniqueFreq.size()) * wordIntensity);
 
-                    neutralLevel += (neuFrequency + 1) / (freqCount.totalNeu() + uniqueFreq.size());
+                    neutralLevel += ((neuFrequency + 1) / (freqCount.totalNeu() + uniqueFreq.size()) * wordIntensity);
 
                     // Total level will be the three levels combined
                     totalLevel = positiveLevel + negativeLevel + neutralLevel;
@@ -105,7 +113,9 @@ public class ParagraphSentiment {
 
         FrequencyCounter freqCount = new FrequencyCounter(new File(trainFileName));
 
-        ParagraphSentiment test = new ParagraphSentiment(paragraph, splitParagraphFile, stopWords, freqCount);
+        WeightedWords weightedWords = new WeightedWords();
+
+        ParagraphSentiment test = new ParagraphSentiment(paragraph, splitParagraphFile, stopWords, freqCount, weightedWords);
 
         System.out.println(test.positiveChance() * 100 + "% Positive");
 
