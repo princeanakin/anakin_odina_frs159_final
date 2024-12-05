@@ -42,9 +42,6 @@ public class FrequencyCounter {
                 // Store the sentiment value of the given tweet
                 String sentiment = tokenized[tokenized.length - 1].trim();
 
-                System.out.println(sentiment);
-                System.out.println(sentiment.contains("negative"));
-
                 if (sentiment.contains("positive")) {
                     // If the given sentence is labeled as positive, add to positive frequencies
                     // Go through every token
