@@ -10,6 +10,7 @@ public class FrequencyCounter {
     private final HashMap<String, Integer> positiveFrequencies;
     private final HashMap<String, Integer> negativeFrequencies;
     private final HashMap<String, Integer> neutralFrequencies;
+    private final HashMap<String, Boolean> uniqueWords;
 
     // Create the constructor for the FrequencyCounter
     public FrequencyCounter(File file) throws FileNotFoundException {
@@ -18,6 +19,7 @@ public class FrequencyCounter {
         positiveFrequencies = new HashMap<>();
         negativeFrequencies = new HashMap<>();
         neutralFrequencies = new HashMap<>();
+        uniqueWords = new HashMap<>();
 
         try (// Scan the given file
         Scanner scan = new Scanner(file)) {
@@ -40,6 +42,7 @@ public class FrequencyCounter {
                                 // Otherwise, increment its frequency
                                 positiveFrequencies.put(s, positiveFrequencies.get(s) + 1);
                             }
+                            uniqueWords.put(s, true);
                         }
                     }
                     // If the given sentence is labeled as negative, add to negative frequencies
@@ -52,6 +55,7 @@ public class FrequencyCounter {
                                 // Otherwise, increment its frequency
                                 negativeFrequencies.put(s, negativeFrequencies.get(s) + 1);
                             }
+                            uniqueWords.put(s, true);
                         }
                     }
                     // If the given sentence is labeled as neutral, add to neutral frequencies
@@ -64,6 +68,7 @@ public class FrequencyCounter {
                                 // Otherwise, increment its frequency
                                 neutralFrequencies.put(s, neutralFrequencies.get(s) + 1);
                             }
+                            uniqueWords.put(s, true);
                         }
                     }
                     default -> {
@@ -85,6 +90,11 @@ public class FrequencyCounter {
         return negativeFrequencies;
     }
 
+    // Method to get the HashMap of neutral frequencies
+    public HashMap<String, Integer> getNeutralFrequencies() {
+        return neutralFrequencies;
+    }
+
     // Method to get the positive words
     public Set<String> getPositiveKeys() {
         return positiveFrequencies.keySet();
@@ -93,6 +103,16 @@ public class FrequencyCounter {
     // Method to get the negative words
     public Set<String> getNegativeKeys() {
         return negativeFrequencies.keySet();
+    }
+
+    // Method to get the neutral words
+    public Set<String> getNeutralKeys() {
+        return neutralFrequencies.keySet();
+    }
+
+    // Method to get all unique words
+    public Set<String> getWords() {
+        return uniqueWords.keySet();
     }
 
     // Testing
