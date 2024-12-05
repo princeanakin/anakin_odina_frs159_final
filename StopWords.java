@@ -6,13 +6,13 @@ import java.util.Scanner;
 public class StopWords {
 
     // Create a HashMap to be able to quickly access a stop word's existence
-    private HashMap<String, Boolean> stopWords = new HashMap<>();
+    private HashMap<String, Boolean> stopWords;
 
     // Return the HashMap of the stop words
     public HashMap<String, Boolean> getStopWords() {
         return stopWords;
     }
-    
+
     // Set the stop words to a new HashMap
     public void setStopWords(HashMap<String, Boolean> stopWords) {
         this.stopWords = stopWords;
@@ -32,6 +32,6 @@ public class StopWords {
     }
 
     public static void main(String[] args) {
-        
+
     }
 }
