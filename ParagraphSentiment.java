@@ -10,7 +10,7 @@ public class ParagraphSentiment {
     double chanceNegative;
     double chanceNeutral;
 
-    public ParagraphSentiment(File paragraph, String splitParagraphFile, File stopWords, FrequencyCounter freqCount, WeightedWords weights) throws IOException {
+    public ParagraphSentiment(File paragraph, String splitParagraphFile, File stopWords, FrequencyCounter freqCount) throws IOException {
 
         ParagraphSplitter.splitParagraph(paragraph, splitParagraphFile);
 
@@ -74,7 +74,25 @@ public class ParagraphSentiment {
         return chanceNeutral;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+
+        File paragraph = new File(args[0]);
+
+        String splitParagraphFile = args[1];
+
+        File stopWords = new File(args[2]);
+
+        String trainFileName = args[3];
+
+        FrequencyCounter freqCount = new FrequencyCounter(new File(trainFileName));
+
+        ParagraphSentiment test = new ParagraphSentiment(paragraph, splitParagraphFile, stopWords, freqCount);
+
+        System.out.println(test.chanceNegative);
+
+        System.out.println(test.chancePositive);
+
+        System.out.println(test.chanceNeutral);
 
     }
 }

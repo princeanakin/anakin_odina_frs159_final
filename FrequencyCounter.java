@@ -12,7 +12,7 @@ public class FrequencyCounter {
     private final HashMap<String, Integer> neutralFrequencies;
     private final HashMap<String, Boolean> uniqueWords;
 
-    // Create the constructor for the FrequencyCounter
+    // Create the constructor for the FrequencyCounter from the given tweet training data
     public FrequencyCounter(File file) throws FileNotFoundException {
 
         // Initialize the frequency HashMaps for words as keys and frequency integers as values
