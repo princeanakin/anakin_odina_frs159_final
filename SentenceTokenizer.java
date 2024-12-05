@@ -4,7 +4,7 @@ import java.util.StringTokenizer;
 public class SentenceTokenizer {
 
     // Hold an array variable of all of the tokens
-    private final Object[] tokens;
+    private final String[] tokens;
 
     // Constructor for the sentence tokenizer
     public SentenceTokenizer(String sentence) {
@@ -37,13 +37,17 @@ public class SentenceTokenizer {
         }
 
         // Convert the tokens to an array
-        tokens = tokenList.toArray();
+        tokens = new String[tokenList.size()];
+
+        for (int i = 0; i < tokens.length; i++) {
+            tokens[i] = tokenList.get(i);
+        }
 
     }
 
     // Return the tokens array once requested
     public String[] getTokens() {
-        return (String[])tokens;
+        return tokens;
     }
 
     public static void main(String[] args) {

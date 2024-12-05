@@ -33,9 +33,9 @@ public class ParagraphSentiment {
 
                 for (String token : currentTokens.getTokens()) {
 
-                    int posFrequency = 0;
-                    int negFrequency = 0;
-                    int neuFrequency = 0;
+                    double posFrequency = 0;
+                    double negFrequency = 0;
+                    double neuFrequency = 0;
 
                     if (posFreq.containsKey(token)) {
                         posFrequency += posFreq.get(token);
@@ -49,11 +49,11 @@ public class ParagraphSentiment {
                         neuFrequency += neuFreq.get(token);
                     }
 
-                    chancePositive *= (posFrequency + 1) / (posFreq.size() + uniqueFreq.size());
+                    chancePositive *= (posFrequency + 1) / (freqCount.totalPos() + uniqueFreq.size());
 
-                    chanceNegative *= (negFrequency + 1) / (negFreq.size() + uniqueFreq.size());
+                    chanceNegative *= (negFrequency + 1) / (freqCount.totalNeg() + uniqueFreq.size());
 
-                    chanceNeutral *= (neuFrequency + 1) / (neuFreq.size() + uniqueFreq.size());
+                    chanceNeutral *= (neuFrequency + 1) / (freqCount.totalNeu() + uniqueFreq.size());
 
                 }
 

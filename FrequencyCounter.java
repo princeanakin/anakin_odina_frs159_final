@@ -12,6 +12,11 @@ public class FrequencyCounter {
     private final HashMap<String, Integer> neutralFrequencies;
     private final HashMap<String, Boolean> uniqueWords;
 
+    // Create ints to store the total number of words of each type of tweet
+    private int totalPositive;
+    private int totalNegative;
+    private int totalNeutral;
+
     // Create the constructor for the FrequencyCounter from the given tweet training data
     public FrequencyCounter(File file) throws FileNotFoundException {
 
@@ -22,62 +27,65 @@ public class FrequencyCounter {
         uniqueWords = new HashMap<>();
 
         try (// Scan the given file
-        Scanner scan = new Scanner(file)) {
+             Scanner scan = new Scanner(file)) {
             // Go through the entire file training tweets
             while (scan.hasNextLine()) {
+                // Store current tweet
+                String currentTweet = scan.nextLine();
+                // Preprocess tweet
+                Preprocessing.cleanText(currentTweet);
                 // Create a SentenceTokenizer object for each sentence
                 SentenceTokenizer tokenizer = new SentenceTokenizer(scan.nextLine());
                 // Add the tokens to an array of strings
                 String[] tokenized = tokenizer.getTokens();
 
-                switch (tokenized[tokenized.length - 1]) {
+                // Store the sentiment value of the given tweet
+                String sentiment = tokenized[tokenized.length - 1].trim();
+
+                System.out.println(sentiment);
+                System.out.println(sentiment.contains("negative"));
+
+                if (sentiment.contains("positive")) {
                     // If the given sentence is labeled as positive, add to positive frequencies
-                    case "positive" -> {
-                        // Go through every token
-                        for (String s : tokenized) {
-                            // If it is a new word, add it with a base frequency one to the hash table
-                            if (!positiveFrequencies.containsKey(s)) {
-                                positiveFrequencies.put(s, 1);
-                            } else {
-                                // Otherwise, increment its frequency
-                                positiveFrequencies.put(s, positiveFrequencies.get(s) + 1);
-                            }
-                            uniqueWords.put(s, true);
+                    // Go through every token
+                    for (String s : tokenized) {
+                        // If it is a new word, add it with a base frequency one to the hash table
+                        if (!positiveFrequencies.containsKey(s)) {
+                            positiveFrequencies.put(s, 1);
+                        } else {
+                            // Otherwise, increment its frequency
+                            positiveFrequencies.put(s, positiveFrequencies.get(s) + 1);
                         }
+                        uniqueWords.put(s, true);
                     }
                     // If the given sentence is labeled as negative, add to negative frequencies
-                    case "negative" -> {
-                        for (String s : tokenized) {
-                            // If it is a new word, add it with a base frequency one to the hash table
-                            if (!negativeFrequencies.containsKey(s)) {
-                                negativeFrequencies.put(s, 1);
-                            } else {
-                                // Otherwise, increment its frequency
-                                negativeFrequencies.put(s, negativeFrequencies.get(s) + 1);
-                            }
-                            uniqueWords.put(s, true);
+                } else if (sentiment.contains("negative")) {
+                    for (String s : tokenized) {
+                        // If it is a new word, add it with a base frequency one to the hash table
+                        if (!negativeFrequencies.containsKey(s)) {
+                            negativeFrequencies.put(s, 1);
+                        } else {
+                            // Otherwise, increment its frequency
+                            negativeFrequencies.put(s, negativeFrequencies.get(s) + 1);
                         }
-                    }
-                    // If the given sentence is labeled as neutral, add to neutral frequencies
-                    case "neutral" -> {
-                        for (String s : tokenized) {
-                            // If it is a new word, add it with a base frequency one to the hash table
-                            if (!neutralFrequencies.containsKey(s)) {
-                                neutralFrequencies.put(s, 1);
-                            } else {
-                                // Otherwise, increment its frequency
-                                neutralFrequencies.put(s, neutralFrequencies.get(s) + 1);
-                            }
-                            uniqueWords.put(s, true);
-                        }
-                    }
-                    default -> {
+                        uniqueWords.put(s, true);
                     }
                 }
-
+                // If the given sentence is labeled as neutral, add to neutral frequencies
+                else if (sentiment.contains("neutral")) {
+                    for (String s : tokenized) {
+                        // If it is a new word, add it with a base frequency one to the hash table
+                        if (!neutralFrequencies.containsKey(s)) {
+                            neutralFrequencies.put(s, 1);
+                        } else {
+                            // Otherwise, increment its frequency
+                            neutralFrequencies.put(s, neutralFrequencies.get(s) + 1);
+                        }
+                        uniqueWords.put(s, true);
+                    }
+                } else throw new IllegalArgumentException("No label on tweet");
             }
         }
-
     }
 
     // Method to get the HashMap of positive frequencies
@@ -113,6 +121,21 @@ public class FrequencyCounter {
     // Method to get all unique words
     public Set<String> getWords() {
         return uniqueWords.keySet();
+    }
+
+    // Method to return # number of words in positive tweets
+    public int totalPos() {
+        return totalPositive;
+    }
+
+    // Method to return # number of words in negative tweets
+    public int totalNeg() {
+        return totalNegative;
+    }
+
+    // Method to return # number of words in neutral tweets
+    public int totalNeu() {
+        return totalNeutral;
     }
 
     // Testing
